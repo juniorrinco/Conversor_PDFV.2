@@ -22,7 +22,7 @@ def exibir_menu_imagens(coluna):
         imagens = st.file_uploader(
             label="Selecione as imagens que irão para o arquivo PDF...",
             type=['png', 'jpg', 'jpeg'],
-            accept_multiple_files=True,  # Cuidado com ordem de upload!
+            accept_multiple_files=True,  
         )
         if imagens:
             botoes_desativados = False
@@ -47,11 +47,11 @@ def exibir_menu_imagens(coluna):
 
 
 def gerar_arquivo_pdf_com_imagens(imagens):
-    # Gerar PDF temporário com imagens
+
     imagens_pillow = []
     for imagem in imagens:
         dados_imagem = Image.open(imagem)
-        if dados_imagem.mode == 'RGBA':  # Remover canal de transparência do PNG, se houver
+        if dados_imagem.mode == 'RGBA':  
             dados_imagem = remover_canal_transparencia(imagem=imagem)
         imagens_pillow.append(dados_imagem)
     primeira_imagem = imagens_pillow[0]
@@ -62,19 +62,19 @@ def gerar_arquivo_pdf_com_imagens(imagens):
         primeira_imagem.save(nome_arquivo, save_all=True, append_images=demais_imagens)
         pdf_imagens = pypdf.PdfReader(nome_arquivo)
 
-    # Passar imagens para um novo PDF em branco, ajustando a dimensão e posicionamento
+
     escritor = pypdf.PdfWriter()
     for pagina in pdf_imagens.pages:
         pagina_em_branco = escritor.add_blank_page(
             width=pypdf.PaperSize.A4.width,
             height=pypdf.PaperSize.A4.height,
         )
-        # Ajuste dimensões
-        if pagina.mediabox.top > pagina.mediabox.right:  # Imagem está na vertical
+        
+        if pagina.mediabox.top > pagina.mediabox.right:  
             scale = pagina_em_branco.mediabox.top / pagina.mediabox.top * 0.9
-        else:  # Imagem está na horizontal (ou é quadrada)
+        else:  
             scale = pagina_em_branco.mediabox.right / pagina.mediabox.right * 0.9
-        # Ajuste posicionamento
+       
         tx = (pagina_em_branco.mediabox.right - pagina.mediabox.right * scale) / 2
         ty = (pagina_em_branco.mediabox.top - pagina.mediabox.top * scale) / 2
         transformation = pypdf.Transformation().scale(scale).translate(tx=tx, ty=ty)

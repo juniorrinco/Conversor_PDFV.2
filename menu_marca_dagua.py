@@ -18,12 +18,12 @@ def exibir_menu_marca_dagua(coluna):
         )
 
         arquivo_pdf = st.file_uploader(
-            label="Selecione o arquivo PDF...",
+            label="Selecione o arquivo PDF",
             type='pdf',
             accept_multiple_files=False,
         )
         arquivo_marca = st.file_uploader(
-            label="Selecione o arquivo contendo a marca d'água...",
+            label="Selecione o arquivo contendo a marca d'água",
             type='pdf',
             accept_multiple_files=False,
         )
@@ -33,7 +33,7 @@ def exibir_menu_marca_dagua(coluna):
             botoes_desativados = True
 
         clicou_processar = st.button(
-            'Clique para processar o arquivo PDF...',
+            'Clique para processar o arquivo PDF',
             disabled=botoes_desativados,
             use_container_width=True,
         )
@@ -41,7 +41,7 @@ def exibir_menu_marca_dagua(coluna):
             dados_pdf = adicionar_marca_dagua(arquivo_pdf=arquivo_pdf, arquivo_marca=arquivo_marca)
             nome_arquivo = f'{Path(arquivo_pdf.name).stem}_marca.pdf'
             st.download_button(
-                'Clique para baixar o arquivo PDF resultante...',
+                'Clique para baixar o arquivo PDF resultante',
                 type='primary',
                 data=dados_pdf,
                 file_name=nome_arquivo,

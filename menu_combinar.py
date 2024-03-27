@@ -16,9 +16,9 @@ def exibir_menu_combinar(coluna):
         )
 
         arquivos_pdf = st.file_uploader(
-            label="Selecione os arquivos PDF para combinar...",
+            label="Selecione os arquivos PDF para combinar",
             type='pdf',
-            accept_multiple_files=True,  # Cuidado com ordem de upload!
+            accept_multiple_files=True, 
         )
         if arquivos_pdf:
             botoes_desativados = False
@@ -26,7 +26,7 @@ def exibir_menu_combinar(coluna):
             botoes_desativados = True
 
         clicou_processar = st.button(
-            'Clique para processar o arquivo PDF...',
+            'Clique para processar o arquivo PDF',
             disabled=botoes_desativados,
             use_container_width=True,
         )
@@ -34,7 +34,7 @@ def exibir_menu_combinar(coluna):
             dados_pdf = combinar_arquivos_pdf(arquivos_pdf=arquivos_pdf)
             nome_arquivo = f'combinado.pdf'
             st.download_button(
-                'Clique para baixar o arquivo PDF resultante...',
+                'Clique para baixar o arquivo PDF resultante',
                 type='primary',
                 data=dados_pdf,
                 file_name=nome_arquivo,

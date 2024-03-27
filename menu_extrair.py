@@ -18,8 +18,8 @@ def exibir_menu_extrair(coluna):
         )
 
         arquivo_pdf = st.file_uploader(
-            label="Selecione o arquivo PDF...",
-            type='pdf',
+            label="Selecione o arquivo PDF",
+            type="pdf",
             accept_multiple_files=False,
         )
         if arquivo_pdf:
@@ -27,36 +27,42 @@ def exibir_menu_extrair(coluna):
         else:
             botoes_desativados = True
 
-        numero_pagina = st.number_input('Página para extrair', disabled=botoes_desativados, min_value=1)
+        numero_pagina = st.number_input(
+            "Página para extrair", disabled=botoes_desativados, min_value=1
+        )
         clicou_processar = st.button(
-            'Clique para processar o arquivo PDF...',
+            "Clique para processar o arquivo PDF",
             disabled=botoes_desativados,
             use_container_width=True,
         )
         if clicou_processar:
-            dados_pdf = extrair_pagina_pdf(arquivo_pdf=arquivo_pdf, numero_pagina=numero_pagina)
-            if dados_pdf is None:  # Problema no processamento, emitir aviso
-                st.warning(f'PDF não possui página de número {numero_pagina}!')
-            else:  # Processamento correu OK, exibir botão de download
-                nome_arquivo = f'{Path(arquivo_pdf.name).stem}_pg{numero_pagina:03d}.pdf'
+            dados_pdf = extrair_pagina_pdf(
+                arquivo_pdf=arquivo_pdf, numero_pagina=numero_pagina
+            )
+            if dados_pdf is None:
+                st.warning(f"PDF não possui página de número {numero_pagina}!")
+            else:
+                nome_arquivo = (
+                    f"{Path(arquivo_pdf.name).stem}_pg{numero_pagina:03d}.pdf"
+                )
                 st.download_button(
-                    'Clique para baixar o arquivo PDF...',
-                    type='primary',
+                    "Clique para baixar o arquivo PDF",
+                    type="primary",
                     data=dados_pdf,
                     file_name=nome_arquivo,
-                    mime='application/pdf',
+                    mime="application/pdf",
                     use_container_width=True,
                 )
 
 
 def extrair_pagina_pdf(arquivo_pdf, numero_pagina):
-    # Pegar página
+
     leitor = pypdf.PdfReader(arquivo_pdf)
     try:
         pagina = leitor.pages[numero_pagina - 1]
-    except IndexError:  # O valor de numero_pagina está além do limite de páginas do PDF
+    except IndexError:
         return None
-    # Escrever página para PDF temporário e ler os seus dados
+
     escritor = pypdf.PdfWriter()
     escritor.add_page(pagina)
     dados_pdf = pegar_dados_pdf(escritor=escritor)
