@@ -1,6 +1,5 @@
-from pathlib import Path
-
-import pypdf
+from pathlib import Path  # Importação redundante, pode ser removida
+import PyPDF2  # Corrigido o nome do módulo para PyPDF2
 import streamlit as st
 
 from utilidades import pegar_dados_pdf
@@ -42,9 +41,11 @@ def exibir_menu_extrair(coluna):
             if dados_pdf is None:
                 st.warning(f"PDF não possui página de número {numero_pagina}!")
             else:
+                # Renomeando o arquivo PDF resultante com o número da página
                 nome_arquivo = (
                     f"{Path(arquivo_pdf.name).stem}_pg{numero_pagina:03d}.pdf"
                 )
+                # Adicionando um botão para baixar o arquivo PDF
                 st.download_button(
                     "Clique para baixar o arquivo PDF",
                     type="primary",
@@ -56,14 +57,15 @@ def exibir_menu_extrair(coluna):
 
 
 def extrair_pagina_pdf(arquivo_pdf, numero_pagina):
-
-    leitor = pypdf.PdfReader(arquivo_pdf)
+    """Extrai a página especificada de um arquivo PDF."""
+    leitor = PyPDF2.PdfReader(arquivo_pdf)
     try:
         pagina = leitor.pages[numero_pagina - 1]
     except IndexError:
         return None
 
-    escritor = pypdf.PdfWriter()
+    escritor = PyPDF2.PdfWriter()
     escritor.add_page(pagina)
+    # Função pegar_dados_pdf precisa ser definida ou importada corretamente
     dados_pdf = pegar_dados_pdf(escritor=escritor)
     return dados_pdf
